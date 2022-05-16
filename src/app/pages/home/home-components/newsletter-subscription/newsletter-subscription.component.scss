@@ -1,0 +1,152 @@
+.statisticsContainer {
+    display: flex;
+    justify-content: center;
+
+    .imageContainer {
+        width: 100%;
+        background: #46763a;
+
+        // height: 33vh;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        border-top-right-radius: 3rem;
+
+        .detailsContainer {
+            color: #fff;
+        }
+    }
+
+    h1 {
+      font-weight: bold;
+      font-size: 2.4rem !important;
+      font-family: "haser", sans-serif;
+    }
+
+}
+
+.newsletterInput {
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 0;
+
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #fff;
+    text-indent: 1rem;
+    font-size: 1rem;
+    width: 70%;
+
+
+    // padding-top: 3%;
+    // padding-bottom: 4%;
+
+}
+
+.newsletterInput::placeholder {
+    color: #fff;
+}
+
+:host ::ng-deep {
+    .p-inputgroup-addon {
+        padding: 0.5rem 1rem;
+        min-width: 2.357rem;
+        border: 1px solid #fff;
+        border-radius: 0;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        color: #000;
+    }
+
+    .newsletterInput:focus {
+        outline: none !important;
+    }
+}
+
+
+@media (min-device-width: 1200px) and (max-device-width: 1400px){
+    .newsletterInput{
+        background-color: transparent;
+        border: 1px solid #fff;
+        border-radius: 0;
+    
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        color: #fff;
+        text-indent: 1rem;
+        font-size: 1rem;
+        width: 70%;
+    
+    
+        padding-top: 3%;
+        padding-bottom: 4%;
+        }
+
+        .input-group-prepend button{
+            font-size: 1rem !important;
+            padding: 19px 32px;
+        }
+}
+
+@media (min-device-width: 1400px) {
+    .statisticsContainer{
+        h1{
+            font-size: 1.6rem !important;
+        }
+        .newsletterInput{
+        background-color: transparent;
+        border: 1px solid #fff;
+        border-radius: 0;
+    
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        color: #fff;
+        text-indent: 1rem;
+        font-size: 1.3rem;
+        width: 70%;
+    
+    
+        padding-top: 3%;
+        padding-bottom: 4%;
+        }
+
+        .input-group-prepend button{
+            font-size: 1.3rem !important;
+            padding: 19px 32px;
+        }
+
+        .detailsContainer{
+        padding-left: 1rem !important;
+            label{
+                font-size: 1rem !important;
+                margin-top: 0 !important;
+                max-width: 79% !important;
+            }
+        }
+
+
+        .p-inputgroup-parent{
+            width: 44%  !important;
+            height: 20%;
+            font-size: 1.3rem !important;
+        }
+        .p-inputgroup{
+            height: 3rem;
+            max-width: 100%;
+        }
+      
+
+        ::placeholder{
+            color: white;
+        }
+        .p-inputgroup .newsletterInput{
+            font-size: 1rem;
+        }
+
+        .p-inputgroup span{
+            font-size: 1rem !important;
+            padding: 3.5% !important;
+        }
+
+        
+    }
+}

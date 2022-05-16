@@ -1,0 +1,197 @@
+h3{
+  color: #46763a;
+  padding-bottom: 3%;
+  font-weight: bold;
+  font-family: "haser", sans-serif !important;
+}
+
+.bread-crumb-section{
+  font-family: "haser", sans-serif !important;
+}
+
+.about-entefaa{
+
+  padding-right: 11%;
+  padding-left: 11%;
+  padding-top: 2%;
+  padding-bottom: 1%;
+
+  h3{
+    color: #46763a;
+    padding-bottom: 3%;
+    font-weight: bold;
+    font-family: "haser", sans-serif !important;
+  }
+
+  p{
+    font-size: 1.1rem;
+    line-height: 3;
+    font-weight: 500;
+  }
+
+}
+
+.entefaa-vision{
+
+  padding-right: 11%;
+  padding-left: 11%;
+  padding-top: 2%;
+  padding-bottom: 5%;
+
+  h3{
+    color: #46763a;
+    padding-bottom: 3%;
+  }
+
+  p{
+    font-size: 1.1rem;
+    line-height: 3;
+    font-weight: 500;
+  }
+
+}
+
+.entefaa-message{
+
+
+  padding-right: 11%;
+  padding-left: 11%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+
+  h3{
+    color: #46763a;
+    padding-bottom: 3%;
+  }
+
+  p{
+    font-size: 1.1rem;
+    line-height: 3;
+    font-weight: 500;
+  }
+
+}
+
+.about-us-sections-container{
+
+ text-align: end;
+
+}
+
+.image-container{
+  padding-left: 0% !important;
+
+  img{
+    width: 92%;
+    height: 76vh;
+  }
+
+  .play-button{
+    width: 5rem !important;
+    height: 5rem !important;
+    position: absolute;
+    left: 40%;
+    top: 29%;
+  }
+
+
+}
+
+.bread-crumb-section{
+  margin-right: 15%;
+  font-size: 0.8rem;
+  padding-top: 2%;
+}
+
+.goals-section{
+
+  .header{
+    padding-right: 7%;
+    text-align: right;
+    color: #46763a;
+  }
+
+}
+
+
+.itemContainer {
+  border: 3px solid transparent;
+  border-radius: 8px;
+  width: 23rem;
+  height: 19rem;
+
+  box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+}
+
+.itemContainer:hover {
+border: 3px solid #46763a;
+margin-top: -0.2% !important;
+transition: 0.5s all;
+-moz-transition: 0.5s all;
+-o-transition: 0.5s all;
+-webkit-transition: 0.5s all;
+}
+
+.padded {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  padding: 1rem;
+
+  h1 {
+      font-size: 1.2rem;
+  }
+
+
+  .alignment{
+      text-align: center;
+
+  }
+}
+
+:host ::ng-deep {
+
+  .p-carousel-items-content {
+      padding-bottom: 3rem;
+  }
+  .p-carousel .p-carousel-content .p-carousel-prev,
+  .p-carousel .p-carousel-content .p-carousel-next {
+      border-color: transparent !important;
+      background: #f7faff  !important;
+      color: #46763a !important;
+      outline: 0 none !important;
+      width: 3rem;
+  height: 3rem;
+  }
+
+  .p-carousel .p-carousel-content .p-carousel-prev:hover,
+  .p-carousel .p-carousel-content .p-carousel-next:hover {
+    border-color: transparent !important;
+    background: #46763a  !important;
+    color:  #f7faff  !important;
+
+    outline: 0 none !important;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .p-carousel-next,
+  .p-carousel-prev {
+      box-shadow: none !important;
+      border-width: 1px !important;
+      background-color: transparent !important;
+      border: transparent !important;
+  }
+
+  .p-carousel-items-content{
+    padding-left: 2.2rem;
+  }
+}

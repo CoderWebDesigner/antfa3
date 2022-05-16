@@ -1,0 +1,184 @@
+.bread-crumb-section{
+  margin-right: 5%;
+  font-size: 0.8rem;
+  padding-top: 1%;
+  text-align: end;
+  font-family: "haser", sans-serif !important;
+}
+
+
+.header{
+  padding-right: 7%;
+  text-align: right;
+  color: #46763a;
+
+  h3{
+    font-family: "haser", sans-serif !important;
+  }
+
+}
+
+
+
+.servicesContainer {
+  padding-right: 6rem;
+  padding-left: 6rem;
+
+
+  label{
+
+
+    font-size: 1rem;
+    color: #646569;
+  }
+
+  h1 {
+      font-weight: bold;
+      font-size: 2.4rem;
+      color:  #46763a;
+      font-family: "haser", sans-serif;
+  }
+
+  .service-image{
+    width: 4rem;
+    height: 7vh;
+  }
+
+  .padded {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      justify-content: space-between;
+      padding: 2rem;
+  }
+
+  .itemContainer {
+      border: 3px solid transparent;
+      border-radius: 8px;
+      width: 25rem;
+      height: 28rem;
+
+      h1 {
+        font-weight: normal;
+        font-size: 1.5rem !important;
+
+    }
+
+      box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  }
+
+  .itemContainer:hover {
+      border: 3px solid #46763a;
+  }
+
+  .detailsButton {
+      text-align: left;
+      color: #46763a;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+
+      i{
+        font-size: 1rem;
+      }
+
+
+  }
+}
+
+:host ::ng-deep {
+
+.p-tabview-title{
+
+  font-size: 1.5rem;
+  font-weight: 500;
+
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link{
+  padding-bottom: 0.3rem !important;
+}
+
+
+  .p-highlight {
+      .p-tabview-title {
+          background-color: #fff !important;
+          padding-top: 0.6rem;
+          padding-bottom: 0.6rem;
+          padding-right: 1.5rem;
+          padding-left: 1.5rem;
+          border-radius: 10px;
+          font-size: 1.5rem;
+      }
+      .p-tabview-nav-link {
+          color: #46763a !important;
+      }
+  }
+  .p-tabview .p-tabview-nav {
+      border: 1px solid transparent;
+      border-radius: 15px;
+      background-color: #46763a;
+      display: flex;
+      justify-content: space-evenly;
+      padding-top: 0.1rem;
+      padding-bottom: 0;
+  }
+  .p-highlight {
+      .p-tabview-nav-link {
+          padding-top: 0.3rem !important;
+          padding-bottom: 0.3rem;
+      }
+  }
+
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+      color: #fff;
+      border-radius: 0;
+      margin: 0;
+      background-color: #46763a;
+      border: 1px solid transparent;
+  }
+
+  .p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    margin-top: 0.3rem !important;
+    background-color: #fff !important;
+    padding-top: 0.6rem  !important;
+    padding-bottom: 0.6rem  !important;
+    // padding-right: 1.5rem  !important;
+    // padding-left: 1.5rem  !important;
+    border-radius: 10px;
+    font-size: 1.5rem;
+  }
+
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+      box-shadow: none !important;
+      border: none !important;
+  }
+}
+
+
+
+@media only screen and (min-device-width: 1200px) and (max-device-width: 1366px) {
+
+
+  .servicesContainer  .itemContainer{
+    width: 22rem;
+    height: 27rem;
+  }
+
+  .servicesContainer{
+    label{
+      line-height: 1.8 !important;
+    }
+
+    h1{
+      font-size: 1.2rem !important;
+    }
+  }
+
+
+
+
+}

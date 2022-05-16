@@ -1,0 +1,145 @@
+<div class="container-fluid main-container">
+
+  <div class="bread-crumb-section mr-4 pb-3">
+    <span routerLink="/home">الرئيسية > </span>
+    <span style="font-weight: bold;">الفرص الإستثمارية </span>
+  </div>
+
+  <div class="header">
+    <h3>محمد بن سلمان .. همة السعوديين مثل جبل طويق وطموحنا عنان السماء</h3>
+  </div>
+
+  <div class="top-banner position-relative">
+
+    <img src="../../../assets/images/background/news-details-background.png" class="banner-image">
+
+    <img src="../../../assets/images/background/location-button.png" class="location-button">
+
+    <img src="../../../assets/images/background/share-button.png" class="share-button">
+
+
+    <button class="apply-button">التقديم علي الفرصة</button>
+
+  </div>
+
+  <div class="top-banner-details d-flex justify-content-between">
+
+    <div class="publish-date">
+      تم النشر في : 2 مارس 2012
+    </div>
+
+
+    <div class="d-flex justify-content-between " style="width: 30%;">
+      <div>
+        تاريخ نهاية الفرصة <span class="red-text"> : 1 /1 / 2020</span>
+      </div>
+      <div>
+        تاريخ بدايه الفرصة <span class="green-text"> : 1 /1 / 2020</span>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="opportunity-details">
+
+    <h1 class="green-text">الوصف</h1>
+
+    <p>
+      بحضور معالي حمد أحمد روح الدين، وزير الإعلام والثقافة الكويتي، احتفلت دولة الكويت بعيدها الوطني في إكسبو 2020 دبي،
+      أمس الجمعة.
+    </p>
+
+
+    <p>
+
+      ورحب معالي خليفة شاهين المرر وزير دولة بالضيف الكويتي والوفد المرافق فور وصولهم موقع إكسبو 2020 دبي، وقال معاليه:
+      نبارك لدولة الكويت حكومة وشعبا يومها الوطني الـ 61 ونهنئها على مشاركتها المتميزة في اكسبو 2020 دبي، والتي تستعرض
+      إمكانات دولة استطاعت أن تمزج بين الماضي والحاضر، لتشكل رؤية بعيدة المدى لمستقبلها ويتجسد ذلك من خلال الجناح الذي
+      يبرز لزواره طاقة دولة الكويت وطبيعتها، والأهمية التي توليها حكومتها للاستدامة، بما يتماشى مع رؤية الكويت 2035.
+
+    </p>
+
+
+    <p>
+      وأضاف ان التعاون بين بلدينا يشهد تطوراً مستمراً في مختلف المجالات، عبر شراكات متنوعة في المجالات ذات الاهتمام
+      المشترك، ولا تزال الإمارات تعمل مع شقيقتها الكويت، من أجل مستقبل أكثر رخاء يجمعنا معاً.
+
+    </p>
+
+
+    <p>
+
+      ومن جانبه قال معالي حمد أحمد روح الدين إن اختيار إمارة دبي لتكون مقر استضافة إكسبو 2020 دبي للمرة الأولى في منطقة
+      الشرق الأوسط وأفريقيا والشرق الأوسط لإدارة هذا الحدث العالمي، ما هو إلا مباركة وثقة عالمية على قدرة دولة الإمارات
+      العربية المتحدة في إدارة الفعاليات العالمية، رغم التحديات الناجمة عن انتشار جائحة كوفيد-19 التي خلفت أزمات
+      اقتصادية واجتماعية وصحية على المستوى العالمي، ليكون إنجازاً كبيراً يضاف إلى الإنجازات التي تحققها دولة الإمارات
+      العربية المتحدة في كافة المجالات.
+
+    </p>
+
+  </div>
+
+  <div class="requirements-section">
+    <p-panel [toggleable]="true" styleClass="journeyPanel">
+      <ng-template pTemplate="header">
+        <div class="d-flex flex-row align-items-center">
+          <img src="./assets/images/icons/serviceIcon1.png" class="serviceIcon" />
+          <p class="panelTitle">المتطلبات</p>
+        </div>
+      </ng-template>
+
+      <div class="journeyCarouselContainer" dir="ltr">
+        <p-carousel [value]="journeyItems" [numVisible]="3" [numScroll]="1" [circular]="true"
+          [responsiveOptions]="responsiveOptions" [showIndicators]="false" [autoplayInterval]="6000"
+          [showNavigators]="true" [showIndicators]="false" [circular]="true">
+          <ng-template let-item pTemplate="item">
+            <div class="itemContainer">
+              <div>
+                <div class="alignment">
+                  <h1 class="journeyHeader">{{item.title}}</h1>
+
+                  <!-- <img src="./assets/images/icons/zigzagshape.png" width="100" height="30" /> -->
+                  <label class="mt-2 itemDescription">{{item.description}}</label>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+
+      <img src="./assets/images/background/bottom-left-over.png" class="panelShape2" />
+
+    </p-panel>
+  </div>
+
+
+  <div class="conditions-section">
+
+    <p-panel [toggleable]="true" class="conditionsPanel">
+      <ng-template pTemplate="header">
+        <div class="d-flex flex-row align-items-center">
+          <!-- <img src="./assets/images/icons/serviceIcon2.png" class="serviceIcon" /> -->
+          <p class="panelTitle">الشروط</p>
+        </div>
+
+      </ng-template>
+
+      <div class="alignment pl-3 pt-2 d-flex justify-content-between">
+        <p style="width: 40%;">خدمة تتيح للمستفيد طالب التنفيذ من طلب إصدار أمر الحضانة لضمان حقه الشرعي المنصوص عليه في
+          السند التنفيذي </p>
+        <div class="terms-button">
+          <img src="./assets/images/background/download-icon.png" /> كراسة الشروط والمواصفات
+        </div>
+      </div>
+
+
+      <!-- <img src="./assets/images/background/panelShape.png" class="panelShape1" /> -->
+
+    </p-panel>
+
+  </div>
+
+
+</div>

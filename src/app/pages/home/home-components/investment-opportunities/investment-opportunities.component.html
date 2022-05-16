@@ -1,0 +1,46 @@
+<div style="position: relative;">
+    <div class="container">
+        <div class="servicesContainer" dir="rtl">
+            <div class="pt-4">
+                <h1> الفرص الإستثمارية</h1>
+                <!-- <label class="mt-2"> استكشف جميع الفرص الإستثمارية المتاحة </label> -->
+
+                <div class="mt-4" dir="ltr">
+                    <p-carousel [value]="items" [numVisible]="3" [numScroll]="1" [autoplayInterval]="10000"
+                        [circular]="true" [responsiveOptions]="responsiveOptions" [showIndicators]="false"
+                        [showNavigators]="true" [circular]="true">
+                        <ng-template let-item pTemplate="item">
+                            <div class="itemContainer mt-5">
+                                <div class="padded">
+                                    <div class="imageContainer mb-4">
+                                        <img src="{{item.image}}" width="100" height="100" />
+                                    </div>
+                                    <div dir="rtl"  style="height: 25vh;"class="p-1 content-container">
+                                      <ul class="green-text">
+                                        <li >{{item.type}}</li>
+                                      </ul>
+                                        <h1 class="mt-1">{{item.title}}</h1>
+                                        <label class="mt-1 itemDescription">{{item.description}}</label>
+                                    </div>
+
+                                    <div class="detailsButton" routerLink="/investment-opp-details"><i class="pi pi-arrow-left mx-2"></i>  التفاصيل  </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-carousel>
+                    <div class="detailsButton mb-5" style="margin-left: 4rem;" routerLink="/investment-opportunities"> <i class="pi pi-arrow-left mx-2"></i>
+                        عرض الكل </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <img id="section-background" src="../../../../../assets/images/background/investment-opp.png" style="height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -999;" alt="" />
+</div>

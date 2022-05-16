@@ -1,0 +1,39 @@
+.imageContainer {
+    width: 100%;
+    background: url(../../../../../assets/images/background/container-shape.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+    // min-height: 23vh;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    border-top-right-radius: 3rem;
+
+    .detailsContainer {
+        text-align: center;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding-right: 6rem;
+        padding-left: 6rem;
+    
+        color: #fff;
+    }
+}
+
+
+@media (min-device-width: 1200px) and (max-device-width: 1400px) { 
+
+    .detailsContainer{
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        padding-right: 2rem !important;
+        padding-left: 2rem !important;
+        h1{
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    }
+
+}

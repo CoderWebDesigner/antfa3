@@ -1,0 +1,108 @@
+<div class="container-fluid pt-2">
+
+  <div class="row pb-3 pt -3 d-flex justify-content-between">
+
+
+    <!-- <div class="image-container position-relative col-4">
+
+      <img src="../../../assets/images/background/about-us.png" style="width: 100%;">
+
+      <img class="play-button" src="../../../assets/images/background/play-button.png">
+
+    </div> -->
+
+    <div class="about-us-sections-container  col-12">
+
+      <div class="d-flex flex-column">
+
+        <div class="bread-crumb-section mr-4 pb-3">
+          <span routerLink="/home">الرئيسية > </span>
+          <span style="font-weight: bold;">عن انتفاع</span>
+        </div>
+
+
+        <div class="about-entefaa">
+
+          <h3>عن انتفاع</h3>
+
+          <p>أعلنت الهيئة العامة لعقارات الدولة عن إطلاق منصة انتفا ع الإلكترونية الجديدة، مبينة الهدف من
+            تدشينها، حيث انه ستعمل على تسهيل إجراءات الخدمات العقارية، وتتاح خدمات المنصة للجهات
+            الحكومية والمستثمرين والأفراد إمكانية التقديم على الخدمات المتعلقة بعقارات الدولة</p>
+
+        </div>
+
+
+        <div class="entefaa-vision">
+
+          <h3>الرؤية</h3>
+
+          <p class="text-end" dir="rtl">
+            أوضحت الهيئة العامة لعقارات الدولة أن منصة انتفا ع سيكون من شأنها العمل على تطوير العلاقة ما
+            بين الجهات الحكومية والمستثمرين والأفراد، مما يتاح للمستفيدين سرعة إنجاز ا لإجراءات، وكان معالي
+            محافظ الهيئة الاستاذ إحسان بافقيه، قد تفضل بإطلاق المنصة، مستعرضا أهم أهدافها التي جاءت من
+           أجل العمل على تحقيقه بما ينعكس على تحسين المنظومة بشكل تام
+          .</p>
+
+        </div>
+
+
+        <div class="entefaa-message">
+
+          <h3>الرسالة</h3>
+
+          <p>
+            جاء إنشاء الهيئة العامة لعقارات الدولة في سياق التحولات الاقتصادية الكبرى التي تشهدها المملكة، ولتعبر عن
+            الرؤية الثاقبة والبصيرة النافذة للقيادة الرشيدة ولتوافي أهداف الرؤية 2030، وقد كانت لهذا التطور آثاراً
+            إيجابيةً كبيرةً على عمليات استخدام عقارات الدولة وحمايتها واستغلالها واستثمارها على النحو الأمثل، وإنزال
+            رؤيتها
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <div class="row goals-section">
+
+    <div class="header">
+      <h3>الأهداف</h3>
+    </div>
+
+    <div class="mt-4" dir="ltr" style="margin-bottom: 10%;">
+      <p-carousel [value]="items" [numVisible]="3" [numScroll]="1" [circular]="true"
+        [responsiveOptions]="responsiveOptions" [showIndicators]="false" [autoplayInterval]="5000"
+        [showNavigators]="true" [showIndicators]="false" [circular]="true">
+        <ng-template let-item pTemplate="item">
+          <div class="itemContainer mt-5">
+            <div class="padded">
+              <div dir="rtl" class="p-1 alignment">
+
+                <img src="../../../assets/images/icons/services/icon4.png" width="20%" height="30%"
+                  style="padding-bottom: 1%;" />
+
+                <h1 class="mt-2">{{item.title}}</h1>
+
+                <!-- <img src="./assets/images/icons/zigzagshape.png" width="100" height="30" /> -->
+
+                <label class="mt-2 itemDescription">{{item.description}}</label>
+
+              </div>
+
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+
+    </div>
+
+
+
+  </div>
+
+
+</div>

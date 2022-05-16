@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="servicesContainer mt-5" dir="rtl">
+        <h1>اَخر الأخبار</h1>
+        <!-- <label style="margin-bottom: 3%; font-size: 1.2rem;">تعرف على جديدنا</label> -->
+
+        <div class="mt-4 d-flex flex-lg-row flex-sm-column-reverse flex-md-column-reverse w-100" dir="ltr" style="border-radius: 8px;">
+            <div class="d-flex flex-column w-70 blogDetails" routerLink="/news-main">
+
+                <div class="detailContainer" dir="rtl">
+                    <div class="blogItem" *ngFor="let item of items">
+                        <div class="d-flex flex-row justify-content-between align-items-baseline">
+                            <h1>{{item.title}}</h1>
+                            <i class="pi pi-arrow-left mx-2"></i>
+                        </div>
+                        <label class="mt-2">{{item.description}}</label>
+
+                        <hr style="margin-top: 3rem; height: 2px;" />
+                    </div>
+                </div>
+
+
+                <div class="detailsButton mb-5" style="margin-left: 4rem; font-size: 1.2rem;"> <i class="pi pi-arrow-left mx-2"></i> عرض الكل </div>
+
+
+
+            </div>
+            <div class="d-flex flex-column w-30 blogImageContainer d-none d-lg-block">
+                <img src="./assets/images/background/blogpreviewbg.png" />
+            </div>
+        </div>
+
+    </div>
+</div>

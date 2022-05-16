@@ -1,0 +1,365 @@
+<div class="container">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-light" dir="rtl">
+    <a class="navbar-brand" href="#">
+      <img
+        src="../../../assets/images/logo/brandlogo.png"
+        width="120"
+        height="70"
+        class="d-inline-block align-top"
+        alt="entefaa"
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link  mx-2" routerLink="/home" routerLinkActive="active">الرئيسية</a>
+        <a class="nav-item nav-link mx-2" routerLink="/electronic-services" routerLinkActive="active"
+          >الخدمات الإلكترونية</a
+        >
+        <a
+          class="nav-item nav-link mx-2"
+          routerLink="/investment-opportunities"
+          routerLinkActive="active"
+        >
+          الفرص الإستثمارية
+        </a>
+        <a class="nav-item nav-link mx-2" routerLink="/faq" routerLinkActive="active">الأسئلة الشائعة</a>
+        <a class="nav-item nav-link mx-2" routerLink="/about-us" routerLinkActive="active">عن انتفاع</a>
+        <a class="nav-item nav-link mx-2"
+          ><i class="pi pi-search" style="font-weight: 600"></i
+        ></a>
+        <!-- <a class="nav-item nav-link disabled" href="#">Disabled</a> -->
+      </div>
+
+      <div class="login-section">
+        <button
+          pRipple
+          class="loginButton btn-success"
+          (click)="displayModal = true"
+          *ngIf="!authService.isAuthenticated();else auth"
+        >
+          تسجيل الدخول
+        </button>
+        <ng-template #auth>
+          <div class="btn-group" dropdown >
+            <button id="button-basic" dropdownToggle type="button" class="dropdown-toggle bg-transparent"
+                    aria-controls="dropdown-basic"> مرحبا , {{userName}} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu text-end"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem "><a class="dropdown-item" href="#" (click)="logout()">تسجيل خروج</a></li>
+            </ul>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<!--Login Modal-->
+<p-dialog
+  [style]="{ width: '40vw' }"
+  [modal]="true"
+  [(visible)]="displayModal"
+  [draggable]="false"
+  [transitionOptions]="'100ms'"
+>
+  <ng-template pTemplate="header">
+    <div
+      style="width: 100%; height: 100%"
+      class="d-flex justify-content-between"
+    >
+      <div class="signIn">
+        <div style="font-weight: bold; font-size: 1.5em; color: #46763a" >
+          {{(formType=='login'?'تسجيل الدخول':'تسجيل حساب')}}
+        </div>
+
+
+
+      </div>
+    </div>
+  </ng-template>
+
+  <div style="width: 100%">
+    <form [formGroup]="LoginForm" dir="rtl" class="w-50 ms-auto" *ngIf="formType =='login'">
+        <div class="inputContainer input">
+          <label class="mb-2 fw-bold">رقم الهاتف</label>
+          <div class="input-group">
+            <select class="input-group-text bg-transparent border-0" (change)="selectCountryCode($event)">
+              <option [value]="countryCode" *ngFor="let countryCode of countriesCode" [selected]="countryCode== countriesCode[0]">{{countryCode}}</option>
+            </select>
+            <input
+              type="text"
+              class="p-2 input border-0 form-control"
+              pInputText
+              placeholder="رقم الهاتف"
+              formControlName="loginIdentifier"
+            />
+          </div>
+
+          <div
+            *ngIf="
+              LoginFormControls.loginIdentifier.invalid &&
+              (LoginFormControls.loginIdentifier.dirty ||
+                LoginFormControls.loginIdentifier.touched)
+            "
+            class="text-danger pt-2"
+          >
+          <span *ngIf="LoginForm.controls['loginIdentifier']?.errors?.required">مطلوب</span>
+          <span *ngIf="LoginForm.controls['loginIdentifier']?.errors?.pattern">يجب ان يكون رقم الهاتف مكون من ارقام فقط</span>
+          <span *ngIf="LoginForm.controls['loginIdentifier']?.errors?.maxlength">ادخل رقم الهاتف مكون من 9 ارقام </span>
+
+          </div>
+        </div>
+
+        <div class="inputContainer input">
+
+          <label class="mb-2 fw-bold">الرمز السرى</label>
+          <div class="input-group">
+            <input
+            [type]="showPassword?'text':'password'"
+            class="p-2 form-control border-0"
+            pInputText
+            placeholder="*******"
+            formControlName="password"
+          />
+          <span
+            class="input-group-text bg-transparent border-0"
+            id="basic-addon2"
+            (click)="togglePassword()"
+            ><i class="pi pi-eye" [ngClass]="{'pi-eye' :!showPassword,'pi-eye-slash':showPassword}"></i
+          ></span>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            LoginFormControls.password.invalid &&
+            (LoginFormControls.password.dirty ||
+              LoginFormControls.password.touched)
+          "
+          class="text-danger pt-2 tx-14"
+        >
+          مطلوب
+        </div>
+
+        <div class="inputContainer">
+          <p
+            class="registerLink"
+            style="
+              margin-bottom: 3px;
+              width: 100%;
+              font-weight: bold;
+              text-decoration: underline;
+              cursor: pointer;
+            "
+
+          >
+            انشاء حساب
+          </p>
+        </div>
+
+        <div class="inputContainer">
+          <!-- show password -->
+          <!-- disabled -->
+          <!-- ممثل الجهه الusername =>account name-->
+          <button
+            (click)="login()"
+            class="submitButton"
+            [ngClass]="{ disabled: !isLoading && LoginForm.invalid }"
+            [disabled]="!isLoading && LoginForm.invalid"
+          >
+            الدخول <i class="pi pi-spin pi-spinner mx-2" *ngIf="isLoading"></i>
+          </button>
+
+          <div *ngIf="loginFailed" class="text-danger pt-2 tx-14">
+            فشل فى الدخول, يرجى مراجعه البيانات
+          </div>
+        </div>
+        <!--
+        <div class="inputContainer text-center" (click)="displayRegistration()">
+          {{langVar.headers.newToShatablee}} <span class="registerNow">{{langVar.headers.registerNow}}</span>
+        </div> -->
+      <!-- </div> -->
+    </form>
+    <form [formGroup]="RegisterForm" dir="rtl" class="w-50 ms-auto" *ngIf="formType =='register'">
+      <!-- <div class="d-flex flex-column align-items-start mt-3 register" dir="rtl"> -->
+        <div class="inputContainer input">
+          <label class="mb-2 fw-bold">الاسم</label>
+          <div class="input-group">
+
+            <input
+              type="text"
+              class="p-2 input border-0 form-control"
+              pInputText
+              placeholder="الاسم"
+              formControlName="name"
+            />
+          </div>
+
+          <div
+            *ngIf="
+            RegisterForm.get('name')?.invalid &&
+              (RegisterForm.get('name')?.dirty ||
+              RegisterForm.get('name')?.touched)
+            "
+            class="text-danger pt-2"
+          >
+          <span *ngIf="RegisterForm.controls['name']?.errors?.required">مطلوب</span>
+
+
+          </div>
+        </div>
+        <div class="inputContainer input">
+          <label class="mb-2 fw-bold">اسم المستخدم</label>
+          <div class="input-group">
+
+            <input
+              type="text"
+              class="p-2 input border-0 form-control"
+              pInputText
+              placeholder="اسم المستخدم"
+              formControlName="username"
+            />
+          </div>
+
+          <div
+            *ngIf="
+            RegisterForm.get('username')?.invalid &&
+              (RegisterForm.get('username')?.dirty ||
+              RegisterForm.get('username')?.touched)
+            "
+            class="text-danger pt-2"
+          >
+          <span *ngIf="RegisterForm.controls['username']?.errors?.required">مطلوب</span>
+
+
+          </div>
+        </div>
+        <div class="inputContainer input">
+          <label class="mb-2 fw-bold">البريد الالكترونى</label>
+          <div class="input-group">
+
+            <input
+              type="email"
+              class="p-2 input border-0 form-control"
+              pInputText
+              placeholder="البريد الالكترونى"
+              formControlName="email"
+            />
+          </div>
+
+          <div
+            *ngIf="
+            RegisterForm.get('email')?.invalid &&
+              (RegisterForm.get('email')?.dirty ||
+              RegisterForm.get('email')?.touched)
+            "
+            class="text-danger pt-2"
+          >
+          <span *ngIf="RegisterForm.controls['email']?.errors?.required">مطلوب</span>
+          <span *ngIf="RegisterForm.controls['email']?.errors?.email">برجاء كتابه بريد الكتروني صحيح</span>
+
+
+          </div>
+        </div>
+        <div class="inputContainer input">
+          <label class="mb-2 fw-bold">نوع الحساب</label>
+          <div class="input-group">
+
+            <p-dropdown
+                [options]="userRoles"
+                [(ngModel)]="selectedRole"
+                [style]="{'width':'270px','border':0}"
+                formControlName="type"
+              >
+              </p-dropdown>
+          </div>
+
+          <div
+            *ngIf="
+            RegisterForm.get('type')?.invalid &&
+              (RegisterForm.get('type')?.dirty ||
+              RegisterForm.get('type')?.touched)
+            "
+            class="text-danger pt-2"
+          >
+          <span *ngIf="RegisterForm.controls['type']?.errors?.required">مطلوب</span>
+
+
+          </div>
+        </div>
+        <div class="inputContainer input">
+
+          <label class="mb-2 fw-bold">الرمز السرى</label>
+          <div class="input-group">
+            <input
+            [type]="showPassword?'text':'password'"
+            class="p-2 form-control border-0"
+            pInputText
+            placeholder="*******"
+            formControlName="password"
+          />
+          <span
+            class="input-group-text bg-transparent border-0"
+            id="basic-addon2"
+            (click)="togglePassword()"
+            ><i class="pi pi-eye" [ngClass]="{'pi-eye' :!showPassword,'pi-eye-slash':showPassword}"></i
+          ></span>
+          </div>
+        </div>
+        <div
+          *ngIf="
+          RegisterForm.get('password')?.invalid &&
+            (RegisterForm.get('password')?.dirty ||
+            RegisterForm.get('password')?.touched)
+          "
+          class="text-danger pt-2 tx-14"
+        >
+          مطلوب
+        </div>
+
+        <div class="inputContainer">
+          <p
+            class="registerLink"
+            style="
+              margin-bottom: 3px;
+              width: 100%;
+              font-weight: bold;
+              text-decoration: underline;
+              cursor: pointer;
+            "
+            (click)="openForm('login')"
+          >
+            تسجيل دخول
+          </p>
+        </div>
+
+        <div class="inputContainer">
+          <!-- show password -->
+          <!-- disabled -->
+          <!-- ممثل الجهه الusername =>account name-->
+          <button
+            (click)="register()"
+            class="submitButton"
+            [disabled]="!isLoading && RegisterForm.invalid"
+          >
+            تسجيل الحساب <i class="pi pi-spin pi-spinner mx-2" *ngIf="isLoading"></i>
+          </button>
+
+          <!-- <div *ngIf="loginFailed" class="text-danger pt-2 tx-14">
+            فشل فى الدخول, يرجى مراجعه البيانات
+          </div> -->
+        </div>
+
+    </form>
+  </div>
+</p-dialog>

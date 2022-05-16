@@ -1,0 +1,129 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300&family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap");
+
+
+@font-face {
+    font-family: "JannaLT";
+    src: local("JannaLT"), url(./assets/fonts/JannaLTRegular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: "JannaLTBold";
+    src: local("JannaLTBold"), url(./assets/fonts/JannaLTBold.ttf) format("truetype");
+}
+@font-face {
+  font-family: "haser";
+  src:  url(./assets/fonts/din-next-lt-w23-regular.woff) format('woff');
+}
+p,
+h1,
+h2,
+a,
+label,
+button {
+
+    font-family: "haser", sans-serif;
+
+}
+*{
+  font-family: "haser", sans-serif;
+}
+/* Blocks */
+.site-blocks-cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-position: center center;
+}
+
+.site-blocks-cover.overlay {
+    position: relative;
+}
+
+.site-blocks-cover.overlay:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.site-blocks-cover .player {
+    position: absolute;
+    bottom: -250px;
+    width: 100%;
+}
+
+.site-blocks-cover,
+.site-blocks-cover>.container>.row {
+    min-height: 600px;
+    height: calc(100vh);
+}
+
+.site-blocks-cover.inner-page-cover,
+.site-blocks-cover.inner-page-cover>.container>.row {
+    min-height: 400px;
+    height: calc(20vh);
+}
+
+.site-blocks-cover h1 {
+    font-size: 4rem;
+    font-weight: 400;
+    color: #fff;
+    font-weight: 900;
+}
+
+@media (max-width: 991.98px) {
+    .site-blocks-cover h1 {
+        font-size: 2rem;
+    }
+}
+
+.site-blocks-cover p {
+    color: white;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+.site-blocks-cover .desc {
+    font-size: 1.4rem;
+    font-weight: 300;
+}
+
+.site-blocks-cover .desc a {
+    color: white;
+    border-bottom: dotted 1px #fff;
+}
+
+.site-blocks-cover .desc a:hover {
+    color: #fff;
+}
+
+.site-blocks-cover .intro-text {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+@media (max-width: 991.98px) {
+    .site-blocks-cover .display-1 {
+        font-size: 3rem;
+    }
+}
+
+
+.bread-crumb-section {
+    font-size: 0.8rem;
+
+    span {
+        cursor: pointer;
+    }
+
+    span:hover {
+        font-weight: bold;
+    }
+}

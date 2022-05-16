@@ -1,0 +1,113 @@
+.bg-ksa {
+    background-color: #46763a;
+    border: 1px solid transparent;
+}
+
+
+.footer-main-container{
+//   padding: 3%;
+  padding-top: 4%;
+  padding-bottom: 1%;
+  transform: scale(0.9);
+}
+
+h1 {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+label,a {
+    max-width: 100%;
+    color: #fff;
+    // cursor: pointer;
+
+    transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    text-decoration: none;
+}
+a{
+  cursor: pointer;
+  font-size: 1.2rem !important
+}
+// label:hover {
+//     font-weight: 600;
+//     transform: scale(1.05);
+
+//     transition: 0.5s all;
+//     -moz-transition: 0.5s all;
+//     -webkit-transition: 0.5s all;
+//     -o-transition: 0.5s all;
+// }
+.locationLabel {
+    font-size: 0.8rem !important;
+}
+.socialLinks {
+    justify-content: center;
+    margin-top: 1rem;
+    img {
+        cursor: pointer;
+        width: 16px;
+        height: 21px;
+    }
+}
+
+.divider {
+    border-left: 2px solid #fff;
+    width: 1.05rem;
+    height: 3rem;
+    margin-top: 2rem;
+}
+
+
+
+
+@media (min-device-width: 1400px) {
+    .footer-content-container{
+        flex-wrap: wrap;
+        // flex-direction: column;
+
+            .footer-fastLinks{
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .footer-logo-container{
+                justify-content: center;
+            }
+
+
+            .footer-fastLinks label,
+            .footer-fastLinks h1{
+                font-size: 1.2rem !important;
+            }
+
+    }
+
+}
+@media (min-device-width: 1200px) and (max-device-width: 1400px){
+    .footer-content-container{
+        flex-wrap: wrap;
+        // flex-direction: column;
+
+            .footer-logo-container{
+                justify-content: center;
+            }
+
+            .footer-fastLinks{
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            .footer-fastLinks label,
+            .footer-fastLinks h1{
+                font-size: 1.2rem !important;
+            }
+
+            .locationLabel{
+                margin: 0 !important;
+            }
+
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "authenticationMethod": "none",
+  "sendWelcomeFileRedirect": true,"welcomeFile": "index.html",
+  "routes": [
+  	{
+    "path" : "/workspace/entefaa",
+    	"target" : {
+    		"type" : "destination",
+    		"name" : "staticportal"
+    	}
+    }
+  ],
+  "securityConstraints": [
+  	{
+  		
+  		"permission": "accessUserData",
+  		"description": "AccessUserData",
+  		"protectedPaths": [
+  			"/logout/**"
+  		],
+  		"excludedPaths": [
+  			"/"
+  		]
+  	}
+  ]
+  
+}

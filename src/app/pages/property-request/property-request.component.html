@@ -1,0 +1,2323 @@
+<div class="container-fluid main-container">
+  <div class="bread-crumb-section mr-4 pb-3">
+    <span routerLink="/home">الرئيسية > </span>
+    <span routerLink="/electronic-services">الخدمات الإلكترونية > </span>
+    <span style="font-weight: bold">طلب عقار</span>
+  </div>
+
+  <div class="header" #scrollElement id="scrollElement">
+    <h3>تقديم طلب عقار</h3>
+  </div>
+
+  <div class="tab-view-container">
+    <p-tabView
+      *ngIf="!isLoading"
+      [(activeIndex)]="currentPage"
+      (onChange)="changeTab($event)"
+    >
+      <p-tabPanel
+        [disabled]="PropertyRequestFormTwo.invalid"
+        header="١. بيانات العقار المطلوب"
+      >
+        <div class="main-step-header" style="color: #46763a; font-weight: 600">
+          <!-- <div *ngIf="SelectedPropertyType == 'ارض'">
+            نموذج طلب ارض / بيانات الموقع المقترح
+          </div> -->
+          <!-- <div *ngIf="SelectedPropertyType == 'مبنى'">
+            نموذج طلب عقار / بيانات الموظفين و الزوار / عدد الموظفين
+          </div> -->
+        </div>
+        <div
+          class="step-form d-flex flex-column"
+          [formGroup]="PropertyRequestFormTwo"
+        >
+          <div class="form-row row-singleColumn">
+            <div class="d-flex flex-column input-container">
+              <label class="pb-3"
+                >نوع العقار المطلوب <span class="text-danger">*</span></label
+              >
+              <p-dropdown
+                [options]="PropertyTypes"
+                optionValue="name"
+                optionLabel="name"
+                (onChange)="UpdateForm()"
+                [(ngModel)]="SelectedPropertyType"
+                [ngModelOptions]="{ standalone: true }"
+              >
+              </p-dropdown>
+
+              <div
+                *ngIf="
+                  PropertyRequestFormTwoControls.property_type.invalid &&
+                  (PropertyRequestFormTwoControls.property_type.dirty ||
+                    PropertyRequestFormTwoControls.property_type.touched)
+                "
+                class="text-danger mt-3"
+              >
+                <small
+                  *ngIf="
+                    PropertyRequestFormTwoControls.property_type.errors.required
+                  "
+                  class="p-error"
+                  >مطلوب</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="d-flex flex-column text-area-container">
+              <label class="pb-3"
+                >مبررات الطلب <span class="text-danger">*</span></label
+              >
+              <textarea
+                rows="5"
+                placeholder="اكتب مبررات الطلب  هنا"
+                formControlName="explanation"
+              ></textarea>
+
+              <div
+                *ngIf="
+                  PropertyRequestFormTwoControls.explanation.invalid &&
+                  (PropertyRequestFormTwoControls.explanation.dirty ||
+                    PropertyRequestFormTwoControls.explanation.touched)
+                "
+                class="text-danger mt-3"
+              >
+                <small
+                  *ngIf="
+                    PropertyRequestFormTwoControls.explanation.errors.required
+                  "
+                  class="p-error"
+                  >مطلوب</small
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="d-flex flex-column text-area-container">
+              <label class="pb-3"
+                >الموقع <span class="text-danger">*</span></label
+              >
+              <div #mapViewNode></div>
+              <p-gmap
+                [options]="options"
+                [overlays]="overlays"
+                [style]="{ width: '100%', height: '320px' }"
+                (onMapClick)="handleMapClick($event)"
+              ></p-gmap>
+              <input type="text" class="d-none" formControlName="location" />
+              <span *ngIf="selectedLocation">{{
+                "( " +
+                  selectedLocation?.lat() +
+                  "," +
+                  selectedLocation?.lng() +
+                  " )"
+              }}</span>
+            </div>
+          </div>
+          <!-- Building Inputs -->
+          <ng-container *ngIf="SelectedPropertyType == 'مبنى'">
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مدير الفرع <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مدير الفرع"
+                  formControlName="Branch_Manager"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Branch_Manager.invalid &&
+                    (PropertyRequestFormTwoControls.Branch_Manager.dirty ||
+                      PropertyRequestFormTwoControls.Branch_Manager.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Branch_Manager.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >وظائف إشرافية <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  step="1"
+                  (change)="UpdateEmployeesTotal()"
+                  class="text-input"
+                  placeholder="وظائف إشرافية"
+                  formControlName="Supervisor_Jobs"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Supervisor_Jobs.invalid &&
+                    (PropertyRequestFormTwoControls.Supervisor_Jobs.dirty ||
+                      PropertyRequestFormTwoControls.Supervisor_Jobs.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Supervisor_Jobs.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Supervisor_Jobs.errors
+                        .pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >عدد الموظفين بالمكاتب
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  (change)="UpdateEmployeesTotal()"
+                  step="1"
+                  type="number"
+                  class="text-input"
+                  placeholder="عدد الموظفين بالمكاتب"
+                  formControlName="Emp_Office"
+                />
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Emp_Office.invalid &&
+                    (PropertyRequestFormTwoControls.Emp_Office.dirty ||
+                      PropertyRequestFormTwoControls.Emp_Office.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Emp_Office.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Emp_Office.errors.pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >عدد الموظفين بدون مكاتب
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  step="1"
+                  type="number"
+                  class="text-input"
+                  placeholder="عدد الموظفين بدون مكاتب"
+                  formControlName="Emp_Nooffice"
+                  (change)="UpdateEmployeesTotal()"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Emp_Nooffice.invalid &&
+                    (PropertyRequestFormTwoControls.Emp_Nooffice.dirty ||
+                      PropertyRequestFormTwoControls.Emp_Nooffice.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Emp_Nooffice.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Emp_Nooffice.errors.pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >الوظائف المتوقعة خلال الثلاث سنوات القادمة
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  class="text-input"
+                  step="1"
+                  type="number"
+                  (change)="UpdateEmployeesTotal()"
+                  placeholder="الوظائف المتوقعة خلال الثلاث سنوات القادمة"
+                  formControlName="Expected_Jobs"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Expected_Jobs.invalid &&
+                    (PropertyRequestFormTwoControls.Expected_Jobs.dirty ||
+                      PropertyRequestFormTwoControls.Expected_Jobs.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Expected_Jobs.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Expected_Jobs.errors
+                        .pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >اجمالي العدد <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="اجمالي العدد"
+                  disabled
+                  formControlName="Total_Employee"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Total_Employee.invalid &&
+                    (PropertyRequestFormTwoControls.Total_Employee.dirty ||
+                      PropertyRequestFormTwoControls.Total_Employee.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Total_Employee.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="step-header" style="padding-top: 3%">
+              <div>الزوار</div>
+            </div>
+
+            <div class="form-row row-singleColumn">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >متوسط عدد الزوار السنوي
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="متوسط عدد الزوار السنوي"
+                  formControlName="Visitor_Avg"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Visitor_Avg.invalid &&
+                    (PropertyRequestFormTwoControls.Visitor_Avg.dirty ||
+                      PropertyRequestFormTwoControls.Visitor_Avg.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Visitor_Avg.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="form-row row-singleColumn">
+              <div
+                class="d-flex flex-column input-container"
+                style="color: #46763a; font-weight: 600"
+              >
+                <label class="pb-3">إحتياج المساحات والمرافق المتخصصة</label>
+                <label class="pb-3">عدد الفراغات</label>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مبنى رئيسي <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مبنى رئيسي"
+                  formControlName="Main_Building"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Main_Building.invalid &&
+                    (PropertyRequestFormTwoControls.Main_Building.dirty ||
+                      PropertyRequestFormTwoControls.Main_Building.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Main_Building.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مبنى خدمات <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مبنى خدمات"
+                  formControlName="Building_Service"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Building_Service.invalid &&
+                    (PropertyRequestFormTwoControls.Building_Service.dirty ||
+                      PropertyRequestFormTwoControls.Building_Service.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Building_Service.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مبنى مخزن <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مبنى مخزن"
+                  formControlName="Building_Store"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Building_Store.invalid &&
+                    (PropertyRequestFormTwoControls.Building_Store.dirty ||
+                      PropertyRequestFormTwoControls.Building_Store.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Building_Store.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مبنى حراسات <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مبنى حراسات"
+                  formControlName="Security_Building"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Security_Building.invalid &&
+                    (PropertyRequestFormTwoControls.Security_Building.dirty ||
+                      PropertyRequestFormTwoControls.Security_Building.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Security_Building.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مبنى غرفة كهرباء <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مبنى غرفة كهرباء"
+                  formControlName="Electric_room"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Electric_room.invalid &&
+                    (PropertyRequestFormTwoControls.Electric_room.dirty ||
+                      PropertyRequestFormTwoControls.Electric_room.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Electric_room.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مواقف <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="text-input"
+                  placeholder="مواقف"
+                  formControlName="Parking"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.Parking.invalid &&
+                    (PropertyRequestFormTwoControls.Parking.dirty ||
+                      PropertyRequestFormTwoControls.Parking.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.Parking.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- ./Building Inputs -->
+          <!-- Land Inputs -->
+          <ng-container *ngIf="SelectedPropertyType == 'ارض'">
+            <div class="form-row row-singleColumn">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >المساحة المطلوبة <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="number-input"
+                  placeholder="ادخل المساحة"
+                  formControlName="space"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.space.invalid &&
+                    (PropertyRequestFormTwoControls.space.dirty ||
+                      PropertyRequestFormTwoControls.space.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="PropertyRequestFormTwoControls.space.errors.required"
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="PropertyRequestFormTwoControls.space.errors.pattern"
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+
+              <!-- <div class="d-flex flex-column input-container">
+                <label class="pb-3">إحداثيات الموقع</label>
+                <input
+                  type="text"
+                  class="text-input"
+                  placeholder="ادخل الإحداثيات"
+                  formControlName="coordinates"
+                  disabled
+                />
+              </div> -->
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >عدد المباني المطلوبة
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="number-input"
+                  step="1"
+                  placeholder="ادخل عدد المباني"
+                  formControlName="buildings_num"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.buildings_num.invalid &&
+                    (PropertyRequestFormTwoControls.buildings_num.dirty ||
+                      PropertyRequestFormTwoControls.buildings_num.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.buildings_num.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.buildings_num.errors
+                        .pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.buildings_num.errors
+                        .pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >مسطح المبنى <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="number-input"
+                  placeholder="ادخل المسطحات"
+                  formControlName="flats_buildings"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.flats_buildings.invalid &&
+                    (PropertyRequestFormTwoControls.flats_buildings.dirty ||
+                      PropertyRequestFormTwoControls.flats_buildings.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.flats_buildings.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.flats_buildings.errors
+                        .pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >عدد العاملين المتوقع بالمباني
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="number-input"
+                  placeholder="ادخل العدد"
+                  step="1"
+                  formControlName="workers_no"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.workers_no.invalid &&
+                    (PropertyRequestFormTwoControls.workers_no.dirty ||
+                      PropertyRequestFormTwoControls.workers_no.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.workers_no.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.workers_no.errors.pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.workers_no.errors.pattern
+                    "
+                    class="p-error"
+                    >الرقم غير صالح</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >هل يوجد للجهة عقار بالقرب
+                  <span class="text-danger">*</span></label
+                >
+                <p-dropdown
+                  [options]="NearbyProperties"
+                  placeholder="هل يوجد للجهة عقار بالقرب"
+                  optionValue="name"
+                  optionLabel="name"
+                  [(ngModel)]="selectedNearByProperty"
+                  formControlName="project_info"
+                >
+                </p-dropdown>
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.project_info.invalid &&
+                    (PropertyRequestFormTwoControls.project_info.dirty ||
+                      PropertyRequestFormTwoControls.project_info.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.project_info.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row" *ngIf="selectedNearByProperty != 'لا'">
+              <div class="d-flex flex-column text-area-container">
+                <label class="pb-3"
+                  >الموقع <span class="text-danger">*</span></label
+                >
+                <p-gmap
+                  [options]="options"
+                  [overlays]="overlaysNearby"
+                  [style]="{ width: '100%', height: '320px' }"
+                  (onMapClick)="handleMapClick($event, 'nearby')"
+                ></p-gmap>
+                <span *ngIf="selectedLocationNearby">{{
+                  "( " +
+                    selectedLocationNearby?.lat() +
+                    "," +
+                    selectedLocationNearby?.lng() +
+                    " )"
+                }}</span>
+              </div>
+            </div>
+            <div class="step-header" style="padding-top: 3%">
+              <div>بيانات المشروع</div>
+            </div>
+
+            <div class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >أسم المشروع <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="text-input"
+                  placeholder="أسم المشروع"
+                  formControlName="project_name"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.project_name.invalid &&
+                    (PropertyRequestFormTwoControls.project_name.dirty ||
+                      PropertyRequestFormTwoControls.project_name.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.project_name.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >رقم المشروع بالميزيانية
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="number-input"
+                  placeholder="ادخل الرقم"
+                  formControlName="project_budget"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.project_budget.invalid &&
+                    (PropertyRequestFormTwoControls.project_budget.dirty ||
+                      PropertyRequestFormTwoControls.project_budget.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.project_budget.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="SelectedPropertyType == 'ارض'" class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >المبلغ المتعمد بالمشروع
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="text-input"
+                  placeholder="المبلغ المتعمد بالمشروع"
+                  formControlName="amount_approved"
+                />
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.amount_approved.invalid &&
+                    (PropertyRequestFormTwoControls.amount_approved.dirty ||
+                      PropertyRequestFormTwoControls.amount_approved.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.amount_approved.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >تاريخ البدء بالمشروع
+                  <span class="text-danger">*</span></label
+                >
+                <p-calendar
+                  (onSelect)="UpdateStartDate($event)"
+                  [showIcon]="true"
+                  dateFormat="dd.mm.yy"
+                  class="date-input"
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="2022:2080"
+                  formControlName="project_start_date"
+                >
+                </p-calendar>
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.project_start_date.invalid &&
+                    (PropertyRequestFormTwoControls.project_start_date.dirty ||
+                      PropertyRequestFormTwoControls.project_start_date.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.project_start_date.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="SelectedPropertyType == 'ارض'" class="form-row">
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >تاريخ المتوقع لإنتهاء بالمشروع
+                  <span class="text-danger">*</span></label
+                >
+                <!-- <input type="date" class="date-input" formControlName="project_end_date" /> -->
+                <p-calendar
+                  [minDate]="SelectedStartDate"
+                  [showIcon]="true"
+                  inputId="basic2"
+                  dateFormat="dd.mm.yy"
+                  class="date-input"
+                  [yearNavigator]="true"
+                  [monthNavigator]="true"
+                  yearRange="2022:2080"
+                  formControlName="project_end_date"
+                  (onSelect)="UpdateEndDate($event)"
+                >
+                </p-calendar>
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.project_end_date.invalid &&
+                    (PropertyRequestFormTwoControls.project_end_date.dirty ||
+                      PropertyRequestFormTwoControls.project_end_date.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.project_end_date.errors
+                        .required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+              <div class="d-flex flex-column input-container">
+                <label class="pb-3"
+                  >نوع الاستخدام <span class="text-danger">*</span></label
+                >
+                <p-dropdown
+                  [options]="usageTypes"
+                  placeholder="اختار نوع الاستخدام"
+                  optionValue="name"
+                  optionLabel="name"
+                  formControlName="usage_type"
+                >
+                </p-dropdown>
+
+                <div
+                  *ngIf="
+                    PropertyRequestFormTwoControls.usage_type.invalid &&
+                    (PropertyRequestFormTwoControls.usage_type.dirty ||
+                      PropertyRequestFormTwoControls.usage_type.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                      PropertyRequestFormTwoControls.usage_type.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- ./Land Inputs -->
+          <div class="form-row">
+            <div class="d-flex flex-column text-area-container">
+              <label class="pb-3">الطلبات الخاصة</label>
+              <textarea
+                rows="5"
+                placeholder="اكتب الطلبات الخاصة للجهة مثال (مختبرات، مستودعات،...)"
+                formControlName="special_requests"
+                (input)="getForm()"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel
+        [disabled]="PropertyRequestFormTwo.invalid"
+        header="٢. بيانات العقارات الحالية"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="table-form-header">
+                <div style="color: #46763a; font-weight: 600">
+                  اضافة بيان بالعقارات الحالية في مدينه الطلب
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row py-4 bg-light-green-color">
+            <div class="col-lg-10 mx-auto" [formGroup]="PropertyRequestFormThree">
+              <div class="row " >
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                  >نوع العقار الحالي <span class="text-danger">*</span></label
+                >
+                <p-dropdown
+                  [options]="PropertyTypes"
+                  optionValue="name"
+                  optionLabel="name"
+                  formControlName="type"
+                  (onChange)="changeCurrentType()"
+                  [(ngModel)]="selectedCurrentType"
+                  placeholder="اختار نوع العقار الحالي"
+                >
+                </p-dropdown>
+
+                <div
+                  *ngIf="
+                  PropertyRequestFormThreeControls.type.invalid &&
+                    ( PropertyRequestFormThreeControls.type.dirty ||
+                    PropertyRequestFormThreeControls.type.touched)
+                  "
+                  class="text-danger mt-3"
+                >
+                  <small
+                    *ngIf="
+                    PropertyRequestFormThreeControls.type.errors.required
+                    "
+                    class="p-error"
+                    >مطلوب</small
+                  >
+                </div>
+                </div>
+                <div class="col-lg-4 mb-4"></div>
+                <div class="col-lg-4 mb-3">
+                  <label class="pb-3"
+                    >اسم العقار <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="property_name"
+                    class="text-input w-100"
+                    placeholder="اسم العقار"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.property_name.invalid &&
+                      (PropertyRequestFormThreeControls.property_name.dirty ||
+                        PropertyRequestFormThreeControls.property_name.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.property_name.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >نوع الاستخدام <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    [options]="usageTypes"
+                    placeholder="اختار نوع الاستخدام"
+                    [(ngModel)]="selectCurrentUsageType"
+                    optionValue="name"
+                    optionLabel="name"
+                    formControlName="usage_type"
+                    styleClass="w-100"
+
+                  >
+                  </p-dropdown>
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.usage_type.invalid &&
+                      (PropertyRequestFormThreeControls.usage_type.dirty ||
+                        PropertyRequestFormThreeControls.usage_type.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.usage_type.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4"></div>
+                <div class="col-lg-4 mb-4" *ngIf="selectCurrentUsageType=='اخرى'">
+                  <label class="pb-3"
+                    >نوع الاستخدام <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="usage_type"
+                    class="number-input w-100"
+                    placeholder="نوع الاستخدام"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.instrument_no.invalid &&
+                      (PropertyRequestFormThreeControls.instrument_no.dirty ||
+                        PropertyRequestFormThreeControls.instrument_no.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.instrument_no.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-12 mb-4">
+                  <label class="pb-3"
+                    >موقع المبنى <span class="text-danger">*</span></label
+                  >
+                  <p-gmap
+                    [options]="options"
+                    [overlays]="overlaysCurrentBuilding"
+                    [style]="{ width: '100%', height: '320px' }"
+                    (onMapClick)="handleMapClick($event, 'building')"
+                    styleClass="w-100"
+                  ></p-gmap>
+                  <input
+                    type="text"
+                    formControlName="location"
+                    class="text-input d-none w-100"
+                    placeholder="موقع المبنى"
+                  />
+                  <span *ngIf="selectedLocationCurrentBuilding">{{
+                    "( " +
+                      selectedLocationCurrentBuilding?.lat() +
+                      "," +
+                      selectedLocationCurrentBuilding?.lng() +
+                      " )"
+                  }}</span>
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.location.invalid &&
+                      (PropertyRequestFormThreeControls.location.dirty ||
+                        PropertyRequestFormThreeControls.location.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.location.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >ملكية العقار <span class="text-danger">*</span></label
+                  >
+                  <p-dropdown
+                    [options]="ownTypes"
+                    optionValue="name"
+                    optionLabel="name"
+                    placeholder="اختار ملكية العقار"
+                    formControlName="owner"
+                    (onChange)="setRentalValue()"
+                    [(ngModel)]="selectedOwnerType"
+                    styleClass="w-100"
+                  >
+                  </p-dropdown>
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.owner.invalid &&
+                      (PropertyRequestFormThreeControls.owner.dirty ||
+                        PropertyRequestFormThreeControls.owner.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="PropertyRequestFormThreeControls.owner.errors.required"
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >رقم الصك <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="instrument_no"
+                    class="number-input w-100"
+                    placeholder="رقم الصك"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.instrument_no.invalid &&
+                      (PropertyRequestFormThreeControls.instrument_no.dirty ||
+                        PropertyRequestFormThreeControls.instrument_no.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.instrument_no.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"> (اختياري) اجمالي المساحة</label>
+                  <input
+                    type="number"
+                    formControlName="total_area"
+                    class="number-input w-100"
+                    placeholder="اجمالي المساحة"
+                  />
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >مساحة مسطح البناء <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="building_area"
+                    class="number-input w-100"
+                    placeholder="مساحة مسطح البناء"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.building_area.invalid &&
+                      (PropertyRequestFormThreeControls.building_area.dirty ||
+                        PropertyRequestFormThreeControls.building_area.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.building_area.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >نسبة اشغال الارض <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="capacity"
+                    class="number-input w-100"
+                    placeholder="نسبة اشغال الارض"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.capacity.invalid &&
+                      (PropertyRequestFormThreeControls.capacity.dirty ||
+                        PropertyRequestFormThreeControls.capacity.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.capacity.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4" *ngIf="selectedCurrentType=='مبنى' ">
+                  <label class="pb-3"
+                    >نسبة اشغال المبنى <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="capacity_building"
+                    class="number-input w-100"
+                    placeholder="نسبة اشغال المبنى"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.capacity.invalid &&
+                      (PropertyRequestFormThreeControls.capacity.dirty ||
+                        PropertyRequestFormThreeControls.capacity.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.capacity.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4" *ngIf="selectedOwnerType != 'مملوك'">
+                  <label class="pb-3"
+                    >مبلغ الإستئجار السنوي للعقار
+                    <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="rental"
+                    class="number-input w-100"
+                    placeholder="مبلغ الإستئجار السنوي للعقار"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.rental.invalid &&
+                      (PropertyRequestFormThreeControls.rental.dirty ||
+                        PropertyRequestFormThreeControls.rental.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.rental.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >عدد الموظفين <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="employees_no"
+                    class="number-input w-100"
+                    placeholder="عدد الموظفين"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.employees_no.invalid &&
+                      (PropertyRequestFormThreeControls.employees_no.dirty ||
+                        PropertyRequestFormThreeControls.employees_no.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.employees_no.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.employees_no.errors.pattern
+                      "
+                      class="p-error"
+                      >الرقم غير صالح</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >نسبة اشغال الموظفين <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="employees_info"
+                    class="number-input w-100"
+                    placeholder="نسبة اشغال الموظفين"
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.employees_info.invalid &&
+                      (PropertyRequestFormThreeControls.employees_info.dirty ||
+                        PropertyRequestFormThreeControls.employees_info.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.employees_info.errors
+                          .required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                  <label class="pb-3"
+                    >الاحداثيات <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="coordinates"
+                    class="text-input w-100"
+                    placeholder="الاحداثيات "
+                    disabled
+                  />
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.coordinates.invalid &&
+                      (PropertyRequestFormThreeControls.coordinates.dirty ||
+                        PropertyRequestFormThreeControls.coordinates.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="
+                        PropertyRequestFormThreeControls.coordinates.errors.required
+                      "
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-lg-6 mb-4">
+                  <label class="pb-3"
+                    >ملاحظات <span class="text-danger">*</span></label
+                  >
+                  <textarea
+                    rows="4"
+                    cols="10"
+                    formControlName="notes"
+                    class="text-input w-100"
+                    placeholder="ملاحظات"
+                    (input)="getForm()"
+                  ></textarea>
+
+                  <div
+                    *ngIf="
+                      PropertyRequestFormThreeControls.notes.invalid &&
+                      (PropertyRequestFormThreeControls.notes.dirty ||
+                        PropertyRequestFormThreeControls.notes.touched)
+                    "
+                    class="text-danger mt-3"
+                  >
+                    <small
+                      *ngIf="PropertyRequestFormThreeControls.notes.errors.required"
+                      class="p-error"
+                      >مطلوب</small
+                    >
+                  </div>
+                </div>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-3 mb-4 text-start align-self-center">
+                  <button
+                    class="add-button btn btn-success w-100"
+                    (click)="AddPropertyRequestDetails()"
+                    [disabled]="PropertyRequestFormThree.invalid"
+                  >
+                    إضافة
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="table-form-header mt-5">
+          <div>بيان بالعقارات الحاليةفي مدينه الطلب</div>
+        </div>
+        <div class="table-responsive mx-5">
+          <table class="table table-section">
+            <thead>
+              <tr>
+                <th *ngFor="let column of headers">{{ column }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let row of PropertyDetails; let i = index"
+                [ngClass]="{ 'colored-row': i % 2 == 1 }"
+              >
+                <td>{{ row.property_name }}</td>
+                <td>{{ row.usage_type }}</td>
+                <td>{{ row.location }}</td>
+                <td>{{ row.owner }}</td>
+                <td>{{ row.instrument_no }}</td>
+                <td>
+                  <i
+                    class="pi pi-eye mx-2"
+                    style="font-size: 1.2rem; cursor: pointer"
+                    (click)="openModal(row)"
+                  >
+                  </i>
+                  <i
+                    class="pi pi-times mx-2"
+                    style="font-size: 1.2rem; cursor: pointer"
+                    (click)="deleteRow(row)"
+                  ></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          *ngIf="PropertyDetails && PropertyDetails.length === 0"
+          style="
+            width: 100;
+            text-align: center;
+            color: #46763a;
+            font-size: 1.3rem;
+          "
+        >
+          لم يتم إضافه بيانات
+        </div>
+      </p-tabPanel>
+      <p-tabPanel
+        [disabled]="AttachmentsDetails.length == 0"
+        header="٣. المرفقات "
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="table-form-header">
+                <div style="color: #46763a; font-weight: 600" class="mb-4">
+                  إضافة الملفات
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="bg-light-green-color p-5 mb-5">
+                  <div
+                    class="col-lg-10 mx-auto"
+                    [formGroup]="PropertyRequestFormFour"
+                  >
+                    <div
+                      class="p-3 rounded-sm files-upload text-center mb-5"
+                      (dragover)="onDragOver($event)"
+                      (drop)="onDropSuccess($event)"
+                    >
+                      <input
+                        type="file"
+                        class="file-upload"
+                        accept="application/pdf"
+                        placeholder="رفع ملف"
+                        (change)="onUpload($event)"
+                        style="display: none"
+                        #fileUpload
+                      />
+                      <div class="files-upload-icon">
+                        <img
+                          src="../../../assets/images/icons/file-icon.png"
+                          alt=""
+                          class="img-fluid"
+                        />
+                      </div>
+                      <div class="files-upload-text mb-5">
+                        <p class="text-green-color">
+                          اسحب الملف و افلته هنا او
+                          <span
+                            class="fw-bold cursor-pointer"
+                            (click)="fileUpload.click()"
+                          >
+                            اختر الملف</span
+                          >
+                        </p>
+                        <small class="text-green-color"
+                          >اقصي حجم للملف 5 مغب</small
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label class="pb-3"
+                          >فئه الملف المرفق
+                          <span class="text-danger">*</span></label
+                        >
+                        <p-dropdown
+                          placeholder="اختار فئه الملف المرفق"
+                          [options]="filesTypes"
+                          optionValue="name"
+                          optionLabel="name"
+                          formControlName="description"
+                          (onChange)="getForm()"
+                        >
+                        </p-dropdown>
+
+                        <div
+                          *ngIf="
+                            PropertyRequestFormTwoControls.property_type
+                              .invalid &&
+                            (PropertyRequestFormTwoControls.property_type
+                              .dirty ||
+                              PropertyRequestFormTwoControls.property_type
+                                .touched)
+                          "
+                          class="text-danger mt-3"
+                        >
+                          <small
+                            *ngIf="
+                              PropertyRequestFormTwoControls.property_type
+                                .errors.required
+                            "
+                            class="p-error"
+                            >مطلوب</small
+                          >
+                        </div>
+                      </div>
+                      <div class="col-lg-6 text-start">
+                        <button
+                          pButton
+                          class="green-btn mx-3"
+                          [disabled]="
+                            PropertyRequestFormFour.invalid || files.length == 0
+                          "
+                          (click)="AddAttachmentsDetails()"
+                        >
+                          إضافة
+                        </button>
+                        <button
+                          pButton
+                          class="light-green-btn"
+                          [disabled]="
+                            PropertyRequestFormFour.invalid || files.length == 0
+                          "
+                          (click)="resetForm()"
+                        >
+                          إلغاء
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="AttachmentsDetails">
+                <div class="col-12">
+                  <div
+                    class="file shadow-lg rounded-3 bg-white p-3 overflow-hidden mb-4"
+                    *ngFor="let file of AttachmentsDetails"
+                  >
+                    <div class="float-end">
+                      <span
+                        ><i class="pi pi-paperclip text-green-color"></i>
+                        <span class="text-green-color fw-bold px-3 heading-3">{{
+                          file.description
+                        }}</span>
+                        <!-- <img
+                          src="../../../assets/images/icons/verticle-line.png"
+                          alt=""
+                        /> -->
+                        <span class="px-3">{{ file.name }}</span></span
+                      >
+                    </div>
+                    <div
+                      class="float-start d-flex align-items-center delete-icon"
+                    >
+                      <i
+                        class="pi pi-times cursor-pointer text-green-color remove-icon p-2 rounded-circle"
+                        (click)="removeAttachment(file)"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel [disabled]="!orderData" header="٤. الملخص  ">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="table-form-header">
+                <div style="color: #46763a; font-weight: 600" class="mb-4">
+                  ملخص الطلب
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-12">
+              <p-panel [toggleable]="true" styleClass="journeyPanel">
+                <ng-template pTemplate="header">
+                  <div class="d-flex flex-row align-items-center">
+                    <p class="panelTitle">بيانات الجهة المتقدمة بالطلب</p>
+                  </div>
+                </ng-template>
+                <div class="row">
+                  <div class="col-lg-3">
+                    <span class="fw-bold d-inline-block mb-3"
+                      >نوع العقار المطلوب</span
+                    >
+                  </div>
+                  <div class="col-lg-3">
+                    <span>{{ orderData?.type }}</span>
+                  </div>
+                  <ng-container *ngIf="orderData?.type == 'مبنى'">
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مدير الفرع</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.branch_manager }}</span>
+                    </div>
+                    <div class="col-lg-12">
+                      <span class="fw-bold d-inline-block mb-3">الموقع</span>
+                    </div>
+                    <div class="col-lg-12">
+                      <span>{{ orderData?.building?.location }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >وظائف إشرافية
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.supervisory_jobss }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >عدد الموظفين بالمكاتب</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.office_emp_num }}</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3">
+                        عدد الموظفين بدون مكاتب
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.w_office_emp_num }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >الوظائف المتوقعة خلال الثلاث سنوات القادمة
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.expected_jobs }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >اجمالي العدد</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.total_num }}</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >متوسط عدد الزوار السنوي</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.average_visitors }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مبنى رئيسي
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.main_building }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مبنى خدمات</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.service_building }}</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3">مبنى مخزن</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.store_building }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مبنى حراسات
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.guard_building }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مبنى غرفة كهرباء</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.electric_building }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3">مواقف</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.building?.situations }}</span>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="orderData?.type == 'ارض'">
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >المساحة المطلوبة</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.space }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >إحداثيات الموقع
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.location }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >عدد المباني المطلوبة</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.buildings_num }}</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >مسطح المبنى
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.flats_buildings }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >عدد العاملين المتوقع بالمباني
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.workers_no }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >هل يوجد للجهة عقار بالقرب</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.project_info }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3">الموقع</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >أسم المشروع</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.project_name }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >رقم المشروع بالميزيانية
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.project_budget }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >المبلغ المتعمد بالمشروع</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.amount_approved }}</span>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >تاريخ البدء بالمشروع</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.projct_start_date }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >تاريخ المتوقع لإنتهاء بالمشروع
+                      </span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.projct_end_date }}</span>
+                    </div>
+                    <div class="col-lg-3">
+                      <span class="fw-bold d-inline-block mb-3"
+                        >نوع الاستخدام</span
+                      >
+                    </div>
+                    <div class="col-lg-3">
+                      <span>{{ orderData?.land?.usage_type }}</span>
+                    </div>
+                  </ng-container>
+
+                  <div class="col-lg-3">
+                    <span class="fw-bold d-inline-block mb-3"
+                      >مبررات الطلب</span
+                    >
+                  </div>
+                  <div class="col-lg-12">
+                    <span>{{ orderData?.explanation }}</span>
+                  </div>
+                  <div class="col-lg-3">
+                    <span class="fw-bold d-inline-block mb-3"
+                      >الطلبات الخاصة</span
+                    >
+                  </div>
+                  <div class="col-lg-12">
+                    <span>{{ orderData?.special_requests }}</span>
+                  </div>
+                </div>
+
+                <img
+                  src="./assets/images/background/panelShape.png"
+                  class="panelShape2"
+                />
+              </p-panel>
+            </div>
+          </div>
+          <div class="row mb-4" *ngIf="PropertyDetails.length != 0">
+            <div class="col-12">
+              <p-panel [toggleable]="true" styleClass="journeyPanel">
+                <ng-template pTemplate="header">
+                  <div class="d-flex flex-row align-items-center">
+                    <p class="panelTitle">بيان بالعقارات الحالية</p>
+                  </div>
+                </ng-template>
+                <div class="table-responsive">
+                  <table class="table table-section">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let column of propertyDetailsHeader">
+                          {{ column }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="let row of PropertyDetails; let i = index"
+                        [ngClass]="{ 'bg-white': i % 2 == 1 }"
+                      >
+                        <td>
+                          {{ row.property_name }}
+                        </td>
+                        <td>
+                          {{ row.usage_type }}
+                        </td>
+                        <td>
+                          {{ row.location }}
+                        </td>
+                        <td>
+                          {{ row.owner }}
+                        </td>
+                        <td>
+                          {{ row.instrument_no }}
+                        </td>
+                        <td>
+                          {{ row.total_area }}
+                        </td>
+                        <td>
+                          {{ row.building_area }}
+                        </td>
+                        <td>
+                          {{ row.rental }}
+                        </td>
+                        <td>
+                          {{ row.employees_info }}
+                        </td>
+                        <td>
+                          {{ row.employees_no }}
+                        </td>
+                        <td>
+                          {{ row.capacity }}
+                        </td>
+                        <td>
+                          {{ row.coordinates }}
+                        </td>
+                        <td>
+                          {{ row.notes }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <img
+                  src="./assets/images/background/panelShape.png"
+                  class="panelShape2"
+                />
+              </p-panel>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12">
+              <p-panel [toggleable]="true" styleClass="journeyPanel">
+                <ng-template pTemplate="header">
+                  <div class="d-flex flex-row align-items-center">
+                    <p class="panelTitle">المرفقات</p>
+                  </div>
+                </ng-template>
+                <div class="row">
+                  <div class="col-lg-6" *ngFor="let file of AttachmentsDetails">
+                    <div
+                      class="file shadow-lg rounded-3 bg-white p-3 overflow-hidden mb-4"
+                    >
+                      <div class="float-end">
+                        <span
+                          ><i class="pi pi-paperclip text-green-color"></i>
+                          <span
+                            class="text-green-color fw-bold px-3 heading-3"
+                            >{{ file.description }}</span
+                          >
+                          <!-- <img
+                            src="../../../assets/images/icons/verticle-line.png"
+                            alt=""
+                          /> -->
+                          <span class="px-3">{{ file.name }}</span></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <img
+                  src="./assets/images/background/panelShape.png"
+                  class="panelShape2"
+                />
+              </p-panel>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12">
+              <p-checkbox
+                [(ngModel)]="checked"
+                binary="true"
+                inputId="binary"
+                label="أقر بصحة البيانات المدخلة في هذا النموذج , وأتحمل كافة المسؤولية إن ظهر خلاف ذلك."
+              ></p-checkbox>
+            </div>
+          </div>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+
+    <div class="spinner-container d-flex justify-content-center">
+      <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+      <p-dialog
+        [style]="{ width: '30vw' }"
+        [modal]="true"
+        [(visible)]="displayModal"
+        [draggable]="false"
+        [transitionOptions]="'100ms'"
+      >
+        <ng-template pTemplate="header">
+          <div
+            class="success-message text-center"
+            *ngIf="isLoading == false && RequestSubmittedSuccessfully == true"
+          >
+            تم تقديم طلبك بنجاح
+          </div>
+          <div
+            class="error-message text-center"
+            *ngIf="isLoading == false && FailedToSubmitRequest == true"
+          >
+            خطأ في تقديم الطلب
+          </div>
+        </ng-template>
+      </p-dialog>
+    </div>
+
+    <div class="buttons-container d-flex justify-content-center">
+      <button
+        pButton
+        *ngIf="currentPage == 0"
+        class="next-button"
+        [disabled]="PropertyRequestFormTwo.invalid"
+        (click)="NextPage()"
+      >
+        التالي
+      </button>
+      <button
+        pButton
+        *ngIf="currentPage == 3"
+        class="next-button"
+        [disabled]="isLoading || !orderData || !checked"
+        (click)="SubmitPropertyRequest()"
+      >
+        تقديم الطلب
+      </button>
+
+      <button
+        pButton
+        *ngIf="currentPage == 1"
+        class="next-button"
+        (click)="NextPage()"
+      >
+        التالي
+      </button>
+
+      <button
+        pButton
+        *ngIf="currentPage == 2"
+        class="next-button"
+        (click)="NextPage()"
+        [disabled]="AttachmentsDetails.length == 0"
+      >
+        التالي
+      </button>
+
+      <button
+        pButton
+        class="previous-button"
+        [disabled]="isLoading || currentPage == 0"
+        (click)="PreviousPage()"
+      >
+        السابق
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Dialog -->
+<p-dialog
+  header="التفاصيل"
+  [(visible)]="display"
+  [rtl]="true"
+  [style]="{ width: '80vw' }"
+>
+  <div class="row">
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">نوع العقار</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.type }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">اسم العقار</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.property_name }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">نوع الاستخدام</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.usage_type }}</span>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <span class="fw-bold d-inline-block mb-3">موقع المبنى</span>
+      </div>
+      <div class="col-lg-9">
+        <span>{{ selectedRow?.location }}</span>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">ملكية العقار </span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.owner }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">رقم الصك</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.instrument_no }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">اجمالي المساحة</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.total_area }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">مساحة مسطح البناء</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.building_area }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">نسبة اشغال الارض</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.capacity }}</span>
+    </div>
+    <div class="col-lg-3" *ngIf="selectedRow?.type =='مبنى'">
+      <span class="fw-bold d-inline-block mb-3">نسبة اشغال المبنى</span>
+    </div>
+    <div class="col-lg-3" *ngIf="selectedRow?.type =='مبنى'">
+      <span>{{ selectedRow?.capacity_building }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3"
+        >مبلغ الإستئجار السنوي للعقار</span
+      >
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.rental }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">عدد الموظفين</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.employees_no }}</span>
+    </div>
+    <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">نسبة اشغال الموظفين</span>
+    </div>
+    <div class="col-lg-3">
+      <span>{{ selectedRow?.employees_info }}</span>
+    </div>
+    <!-- <div class="col-lg-3">
+      <span class="fw-bold d-inline-block mb-3">الاحداثيات</span>
+    </div>
+    <div class="col-lg-9">
+      <span>{{ selectedRow?.coordinates }}</span>
+    </div> -->
+    <div class="row">
+      <div class="col-lg-3">
+        <span class="fw-bold d-inline-block mb-3">ملاحظات</span>
+      </div>
+      <div class="col-lg-9">
+        <span>{{ selectedRow?.notes }}</span>
+      </div>
+    </div>
+
+  </div>
+</p-dialog>

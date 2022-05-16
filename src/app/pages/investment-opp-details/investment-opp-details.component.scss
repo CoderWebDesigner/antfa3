@@ -1,0 +1,319 @@
+
+.main-container{
+  padding-bottom: 15%;
+}
+
+
+.panelShape2 {
+  position: absolute;
+  bottom: -16%;
+  left: -3%;
+  width: 25rem;
+  z-index: 2;
+}
+
+.bread-crumb-section{
+  margin-right: 5%;
+  font-size: 0.8rem;
+  padding-top: 1%;
+  text-align: end;
+  font-family: 'haser', sans-serif;
+}
+
+
+.header{
+  padding-right: 2%;
+  padding-bottom: 1.5%;
+  text-align: right;
+  color: #46763a;
+
+
+  h3{
+    font-family: 'haser', sans-serif;
+    font-size: 1.8rem  !important;
+  }
+
+}
+
+
+.top-banner{
+
+    width: 96%;
+    height: 60vh;
+    margin-left: auto;
+    margin-right: auto;
+    height: 65vh;
+
+    .banner-image{
+      height: 100%;
+      width: 100%;
+    }
+
+}
+
+
+.red-text{
+  color: red;
+  font-weight: 600;
+}
+
+.green-text{
+  color: #46763a;
+  font-weight: 600;
+}
+
+.top-banner-details{
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 2%;
+  font-size: 0.8rem;
+  width: 96%;
+}
+
+.publish-date{
+  padding-top: 1.5%;
+  font-size: 0.8rem;
+  color: lightslategrey;
+}
+
+.share-button{
+  position: absolute;
+  left: 8%;
+  bottom: 3%;
+  width: 3rem;
+  height: 3rem;
+}
+
+.location-button{
+  position: absolute;
+  bottom: 3%;
+  left: 4%;
+  width: 3rem;
+  height: 3rem;
+}
+
+.apply-button{
+  border-radius: 5px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #46763a;
+  color: white;
+  position: absolute;
+  padding: 0.5%;
+  padding-left: 3%;
+  padding-right: 3%;
+  bottom: 3.5%;
+  left: 13%;
+}
+
+.opportunity-details{
+  text-align: right;
+  width: 96%;
+  margin-left: auto;
+  margin-right: auto;
+
+  h1{
+    font-size: 1.8rem;
+    padding-right: 3%;
+    padding-bottom: 1%;
+  }
+
+}
+
+
+
+.panelTitle {
+  font-family: "haser", sans-serif;
+  color: #000;
+  font-size: 1.85em;
+  font-weight: normal;
+  padding-right: 1.5rem;
+}
+
+.journeyCarouselContainer {
+  .itemContainer {
+      // border: 2px solid #46763A;
+      padding: 1rem;
+      width: 22rem;
+      border-radius: 15px;
+      background: #fff;
+      margin-right: 0.5rem;
+      margin-left: 0.5rem;
+  }
+
+}
+
+
+.itemContainer {
+  border: 3px solid transparent;
+  border-radius: 8px;
+  width: 25rem;
+  // height: 21rem;
+  margin-right: 1rem;
+
+  h1 {
+      font-weight: normal;
+      font-size: 1.5rem !important;
+
+  }
+
+  box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 1px 11px -3px rgba(0, 0, 0, 0.3);
+}
+
+.itemContainer:hover {
+  border: 3px solid #46763a;
+}
+
+
+
+.journeyCarouselContainer {
+    .itemContainer {
+        // border: 2px solid #46763A;
+        padding: 1rem;
+        width: 22rem;
+        border-radius: 15px;
+        background: #fff;
+        margin-right: 0.5rem;
+        margin-left: 0.5rem;
+    }
+
+}
+
+:host ::ng-deep {
+
+  .p-panel{
+    position: relative;
+  }
+
+  .journeyCarouselContainer {
+
+
+
+
+      .p-carousel-content .p-carousel-prev,
+      .p-carousel .p-carousel-content .p-carousel-next {
+          position: absolute;
+          bottom: 0;
+          background: #fff;
+      }
+
+      .p-carousel-content .p-carousel-prev:enabled:hover,
+      .p-carousel .p-carousel-content .p-carousel-next:enabled:hover {
+          background: #46763a;
+
+          .pi {
+              color: #fff !important;
+          }
+      }
+
+      .p-carousel-content .p-carousel-prev {
+        left: 47%;
+      }
+
+      .p-carousel-content .p-carousel-next {
+        right: 40%;
+      }
+
+      .p-carousel-item-start {
+          .itemContainer {
+              border: 2px solid #46763a;
+              z-index: 9999;
+          }
+      }
+  }
+
+  .panelText{
+    padding-top: 3%;
+  }
+
+
+  .panelTitle{
+    margin-bottom: 0;
+  }
+
+  .p-panel {
+      .p-panel-header {
+          border-top-right-radius: 10px;
+          border-top-left-radius: 10px;
+          border: none;
+          background: #EAEFE8;
+          direction: rtl;
+
+          .p-panel-title {
+              font-family: "haser", sans-serif;
+              color: #000;
+              font-size: 1.85em;
+              font-weight: normal;
+              padding-right: 4rem;
+          }
+      }
+
+      .p-panel-content {
+          position: relative;
+          border-bottom-right-radius: 10px;
+          border-bottom-left-radius: 10px;
+          background: #EAEFE8;
+          height: 20rem;
+      }
+
+      width: 96%;
+      margin-top: 2rem;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .journeyPanel {
+      .p-panel-content {
+          height: 17rem;
+      }
+  }
+
+ .p-panel .p-panel-header{
+   height: 52px;
+ }
+
+ .journeyCarouselContainer  .itemContainer {
+  padding: 1rem;
+  width: 22rem;
+  // height: 25vh;
+  border-radius: 15px;
+  background: #fff;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+ }
+
+
+ .conditionsPanel{
+
+  .p-panel .p-panel-content{
+    height: 8rem !important;
+  }
+
+ }
+
+
+}
+
+
+
+
+.alignment {
+  direction: rtl;
+}
+
+
+.terms-button{
+  border-radius: 5px;
+  border: solid 2px #46763a;
+  text-align: center;
+  color: #46763a;
+  padding-right: 2%;
+  padding-left: 2%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+  font-size: 1.1rem;
+  width: 22%;
+  height: 80%;
+  margin-left: 1%;
+}

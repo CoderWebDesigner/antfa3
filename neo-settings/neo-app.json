@@ -1,0 +1,14 @@
+{
+  "welcomeFile": "/index.html",
+  "routes": [
+  		{
+     "path": "<SCP DESTINATION>",
+     "target": {
+       "type": "service",
+       "name": "<SERVICE NAME>"
+     }
+    }
+  ],
+  "sendWelcomeFileRedirect": true,
+  "authenticationMethod": "saml"
+}
